@@ -1,0 +1,468 @@
+:root {
+    --bg-color: #0d0e12;
+    --card-bg: rgba(255, 255, 255, 0.05);
+    --card-border: rgba(255, 255, 255, 0.1);
+    --text-primary: #ffffff;
+    --text-secondary: #94a3b8;
+
+    --accent-indigo: #6366f1;
+    --accent-teal: #14b8a6;
+
+    --status-green: #10b981;
+    --status-yellow: #f59e0b;
+    --status-red: #ef4444;
+
+    --safe-area-bottom: env(safe-area-inset-bottom);
+}
+
+.top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(10, 11, 20, 0.8);
+    backdrop-filter: blur(10px);
+}
+
+.app-logo {
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, white 0%, rgba(255, 255, 255, 0.6) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.date-display {
+    font-size: 12px;
+    font-weight: 600;
+    opacity: 0.7;
+    text-transform: capitalize;
+}
+
+/* Calendar Styles */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    margin-top: 16px;
+}
+
+.calendar-day {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.calendar-day.has-expense {
+    background: var(--accent-indigo);
+    color: white;
+    font-weight: 700;
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.3);
+}
+
+.calendar-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    text-align: center;
+    font-size: 10px;
+    opacity: 0.5;
+    margin-bottom: 8px;
+}
+
+/* List Styles */
+.expense-list {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.expense-item {
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.expense-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.expense-name {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.expense-meta {
+    font-size: 11px;
+    opacity: 0.5;
+}
+
+.expense-value {
+    font-weight: 700;
+    color: var(--accent-teal);
+}
+
+/* Distribution Chart */
+.chart-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.chart-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.chart-label {
+    width: 80px;
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+.chart-bar-bg {
+    flex: 1;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.chart-bar-fill {
+    height: 100%;
+    border-radius: 6px;
+    transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.chart-percent {
+    width: 35px;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: right;
+}
+
+/* Segmented Control */
+.segmented-control {
+    display: flex;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 4px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+}
+
+.segment-btn {
+    flex: 1;
+    border: none;
+    background: none;
+    color: white;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.segment-btn.active {
+    background: white;
+    color: black;
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-label {
+    display: block;
+    font-size: 12px;
+    opacity: 0.6;
+    margin-bottom: 8px;
+}
+
+.form-input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    padding: 12px;
+    border-radius: 12px;
+    outline: none;
+    font-family: inherit;
+}
+
+select.form-input option {
+    color: #000;
+    background: #fff;
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 16px;
+    border-radius: 16px;
+    border: none;
+    background: white;
+    color: black;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.btn-primary:active {
+    transform: scale(0.98);
+}
+
+/* Category Buttons Active State */
+.cat-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    padding: 12px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.cat-btn.active {
+    background: white;
+    color: black;
+    transform: scale(0.95);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2), 0 0 15px rgba(255, 255, 255, 0.3);
+    border-color: white;
+}
+
+/* Help Accordion */
+.help-container {
+    margin-top: 24px;
+    border-top: 1px solid var(--card-border);
+    padding-top: 16px;
+}
+
+.help-trigger {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background: none;
+    border: none;
+    color: var(--accent-indigo);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 8px 0;
+}
+
+.help-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.help-content.show {
+    max-height: 300px;
+    margin-top: 12px;
+}
+
+.help-item {
+    margin-bottom: 12px;
+    padding-left: 12px;
+    border-left: 2px solid var(--card-border);
+}
+
+.help-title {
+    font-weight: 700;
+    color: white;
+    margin-bottom: 2px;
+    display: block;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+}
+
+#app {
+    width: 100%;
+    max-width: 500px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.1), transparent),
+        radial-gradient(circle at bottom left, rgba(20, 184, 166, 0.05), transparent);
+}
+
+#screen-container {
+    flex: 1;
+    padding: 24px;
+    overflow-y: auto;
+    padding-bottom: 120px;
+}
+
+/* Glassmorphism Cards */
+.card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    backdrop-filter: blur(12px);
+    border-radius: 24px;
+    padding: 20px;
+    margin-bottom: 16px;
+}
+
+/* Navigation */
+.bottom-nav {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: rgba(13, 14, 18, 0.8);
+    backdrop-filter: blur(20px);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid var(--card-border);
+    padding-bottom: var(--safe-area-bottom);
+}
+
+.nav-item {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-item.active {
+    color: var(--accent-indigo);
+}
+
+.nav-icon {
+    font-size: 20px;
+}
+
+.nav-label {
+    font-size: 10px;
+    font-weight: 500;
+}
+
+.nav-btn-add {
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, var(--accent-indigo), var(--accent-teal));
+    border-radius: 50%;
+    border: none;
+    color: white;
+    font-size: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 8px 16px rgba(99, 102, 241, 0.4);
+    transform: translateY(-20px);
+    transition: 0.3s;
+}
+
+.nav-btn-add:active {
+    transform: translateY(-16px) scale(0.95);
+}
+
+/* Typography & Components */
+h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin-bottom: 24px;
+}
+
+.big-number {
+    font-size: 48px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #fff, #94a3b8);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Status Colors */
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 6px;
+}
+
+.status-green {
+    background: var(--status-green);
+}
+
+.status-yellow {
+    background: var(--status-yellow);
+}
+
+.status-red {
+    background: var(--status-red);
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.4s ease forwards;
+}

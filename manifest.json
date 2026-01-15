@@ -1,0 +1,16 @@
+{
+  "name": "Liberty - Finanzas Personales",
+  "short_name": "Liberty",
+  "description": "Tu camino hacia la libertad financiera",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#6366f1",
+  "icons": [
+    {
+      "src": "/pwa_icon_512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
