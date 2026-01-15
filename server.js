@@ -4,17 +4,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const path = require('path');
-const nodemailer = require('nodemailer');
 require('dotenv').config();
-
-// Configuración de Nodemailer (se usarán variables de entorno)
-const transporter = nodemailer.createTransport({
-    service: process.env.EMAIL_SERVICE || 'gmail',
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-    }
-});
 
 const app = express();
 const db = new Database('liberty.db');
@@ -58,12 +48,6 @@ db.exec(`
         goal_id INTEGER NULL,
         is_withdrawal INTEGER DEFAULT 0,
         FOREIGN KEY (user_id) REFERENCES users(id)
-    );
-
-    CREATE TABLE IF NOT EXISTS otps (
-        email TEXT PRIMARY KEY,
-        code TEXT,
-        expires_at DATETIME
     );
 `);
 
@@ -109,63 +93,26 @@ app.post('/api/auth/login', async (req, res) => {
     res.json({ token, username });
 });
 
-// --- OTP Routes ---
-app.post('/api/auth/send-otp', async (req, res) => {
-    const { email } = req.body;
-    if (!email) return res.status(400).json({ error: 'Email requerido' });
-
-    const code = Math.floor(100000 + Math.random() * 900000).toString();
-    const expiresAt = new Date(Date.now() + 10 * 60000).toISOString(); // 10 min
-
-    try {
-        db.prepare('INSERT OR REPLACE INTO otps (email, code, expires_at) VALUES (?, ?, ?)').run(email, code, expiresAt);
-
-        console.log('\n==========================================');
-        console.log('🔑 CÓDIGO DE VERIFICACIÓN (DEBUG):', code);
-        console.log('📧 PARA EL EMAIL:', email);
-        console.log('==========================================\n');
-
-        await transporter.sendMail({
-            from: `"Liberty App" <${process.env.EMAIL_USER}>`,
-            to: email,
-            subject: "Tu código de verificación - Liberty",
-            text: `Tu código es: ${code}. Expira en 10 minutos.`,
-            html: `<b>Tu código es: ${code}</b><p>Expira en 10 minutos.</p>`
-        });
-
-        res.json({ success: true, message: 'Código enviado' });
-    } catch (err) {
-        console.error('Error enviando email:', err);
-        // Para desarrollo, si falla el envío, devolvemos el código en la respuesta si no hay configuración
-        if (!process.env.EMAIL_USER) {
-            return res.json({ success: true, message: 'ENTORNO_DESARROLLO: Email no configurado', debugCode: code });
-        }
-        res.status(500).json({ error: 'Error al enviar el código' });
-    }
-});
-
+// --- Master Code Verification ---
 app.post('/api/auth/verify-otp', async (req, res) => {
     const { email, code, password } = req.body;
 
-    // Master code bypass for testing
-    const isMasterCode = (code === '26122024');
-    const otp = db.prepare('SELECT * FROM otps WHERE email = ? AND code = ?').get(email, code);
-
-    if (!isMasterCode && (!otp || new Date(otp.expires_at) < new Date())) {
-        return res.status(400).json({ error: 'Código inválido o expirado' });
-    }
-
-    if (otp) {
-        db.prepare('DELETE FROM otps WHERE email = ?').run(email);
+    // Master code strictly required: 26122024
+    if (code !== '26122024') {
+        return res.status(400).json({ error: 'Código maestro incorrecto' });
     }
 
     let user = db.prepare('SELECT * FROM users WHERE username = ?').get(email);
     if (!user) {
         if (!password) return res.status(400).json({ error: 'Se requiere una contraseña para el primer registro' });
         const hashedPassword = await bcrypt.hash(password, 10);
-        const stmt = db.prepare('INSERT INTO users (username, password) VALUES (?, ?)');
-        const info = stmt.run(email, hashedPassword);
-        user = { id: info.lastInsertRowid, username: email };
+        try {
+            const stmt = db.prepare('INSERT INTO users (username, password) VALUES (?, ?)');
+            const info = stmt.run(email, hashedPassword);
+            user = { id: info.lastInsertRowid, username: email };
+        } catch (e) {
+            return res.status(400).json({ error: 'Error al crear usuario' });
+        }
     }
 
     const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: '30d' });
@@ -243,5 +190,5 @@ app.delete('/api/expenses/:id', authenticate, (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Liberty Server running on http://localhost:${PORT}`);
+    console.log(`Liberty Server running on port ${PORT}`);
 });
