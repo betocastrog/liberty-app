@@ -9,8 +9,6 @@ const screens = {
         return `
             <div class="fade-in">
                 <p class="subtitle">Evolución de Libertad</p>
-                <h1>Liberty</h1>
-                
                 <div class="card">
                     <p class="subtitle">Gasto Total Acumulado</p>
                     <div class="big-number">$${state.getMonthlyTotal().toFixed(2)}</div>
@@ -649,10 +647,17 @@ class App {
             if (currentType === 'expense') {
                 const name = transactionName.value || 'Gasto General';
                 state.addExpense({ name, amount, category: selectedCat });
+                alert('Gasto ingresado');
             } else {
                 const goalId = document.getElementById('target-goal').value;
                 const finalAmount = goalMode === 'withdraw' ? -Math.abs(amount) : Math.abs(amount);
-                state.addGoalContribution(goalId, finalAmount);
+                state.addGoalContribution(goalId, finalAmount, goalMode === 'withdraw');
+
+                if (goalMode === 'withdraw') {
+                    alert('Esperamos que sea solo en caso de emergencia y lo recuperes pronto');
+                } else {
+                    alert('¡Felicidades por tu ahorro!');
+                }
             }
 
             this.navigate('dashboard');
