@@ -1,4 +1,5 @@
 // app.js - Main Application Logic
+const formatCurrency = (amount) => '$' + new Intl.NumberFormat('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(amount);
 
 const screens = {
     dashboard: () => {
@@ -11,7 +12,7 @@ const screens = {
                 <p class="subtitle">Evolución de Libertad</p>
                 <div class="card">
                     <p class="subtitle">Gasto Total Acumulado</p>
-                    <div class="big-number">$${state.getMonthlyTotal().toFixed(2)}</div>
+                    <div class="big-number">${formatCurrency(state.getMonthlyTotal())}</div>
                     <div style="margin-top: 12px; display: flex; align-items: center;">
                         <span class="status-dot ${state.getKPIs().budgetUsage > 90 ? 'status-red' : 'status-green'}"></span>
                         <span style="font-size: 14px; color: ${state.getKPIs().budgetUsage > 90 ? 'var(--status-red)' : 'var(--status-green)'}">
@@ -23,11 +24,11 @@ const screens = {
                 <div style="display: flex; gap: 12px; margin-bottom: 24px;">
                     <div class="card" style="flex: 1; margin-bottom: 0; background: rgba(99, 102, 241, 0.1);">
                         <p class="subtitle" style="margin-bottom: 8px; font-size: 11px;">Presupuesto</p>
-                        <div style="font-size: 18px; font-weight: 600;">$${state.data.config.monthlyBudget.toFixed(0)}</div>
+                        <div style="font-size: 18px; font-weight: 600;">${formatCurrency(state.data.config.monthlyBudget)}</div>
                     </div>
                     <div class="card" style="flex: 1; margin-bottom: 0; background: rgba(20, 184, 166, 0.1);">
                         <p class="subtitle" style="margin-bottom: 8px; font-size: 11px;">Disponible</p>
-                        <div style="font-size: 18px; font-weight: 600;">$${state.getKPIs().savingsCapacity.toFixed(0)}</div>
+                        <div style="font-size: 18px; font-weight: 600;">${formatCurrency(state.getKPIs().savingsCapacity)}</div>
                     </div>
                 </div>
 
@@ -44,7 +45,7 @@ const screens = {
                             </div>
                             <div style="display: flex; align-items: center; gap: 12px;">
                                 <span class="expense-value" style="color: ${e.isWithdrawal ? 'var(--status-yellow)' : (e.type === 'contribution' ? 'var(--accent-teal)' : 'var(--status-red)')}">
-                                    ${e.isWithdrawal ? '-' : (e.type === 'contribution' ? '+' : '-')}$${parseFloat(e.amount).toFixed(2)}
+                                    ${e.isWithdrawal ? '-' : (e.type === 'contribution' ? '+' : '-')}${formatCurrency(e.amount)}
                                 </span>
                                 <button class="delete-expense-btn" data-id="${e.id}" style="background: none; border: none; color: var(--text-secondary); cursor: pointer; padding: 4px; opacity: 0.5;">✕</button>
                             </div>
@@ -77,13 +78,13 @@ const screens = {
                                 <span style="font-weight: 600;">${goal.name} ${isCompleted ? '✅' : ''}</span>
                                 ${isCompleted ? '<span style="font-size: 10px; color: var(--accent-teal); font-weight: 700; margin-top: 4px;">META COMPLETADA</span>' : ''}
                             </div>
-                            <span style="font-size: 12px; opacity: 0.6;">Meta: $${goal.target}</span>
+                            <span style="font-size: 12px; opacity: 0.6;">Meta: ${formatCurrency(goal.target)}</span>
                         </div>
                         <div style="height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; margin-bottom: 8px;">
                             <div style="width: ${progress}%; height: 100%; background: ${isCompleted ? 'var(--accent-teal)' : 'linear-gradient(90deg, var(--accent-indigo), var(--accent-teal))'};"></div>
                         </div>
                         <div style="display: flex; justify-content: space-between; font-size: 14px;">
-                            <span>$${goal.current.toFixed(2)}</span>
+                            <span>${formatCurrency(goal.current)}</span>
                             <span style="color: ${isCompleted ? 'var(--accent-teal)' : 'var(--text-secondary)'}">${progress.toFixed(0)}%</span>
                         </div>
                     </div>
@@ -130,7 +131,7 @@ const screens = {
                     </div>
                 </div>
 
-                <input type="number" id="transaction-amount" placeholder="0.00" 
+                <input type="text" id="transaction-amount" placeholder="0.00" inputmode="decimal"
                     style="width: 100%; background: none; border: none; color: white; font-size: 48px; font-weight: 700; text-align: center; outline: none; margin-bottom: 24px;">
                 
                 <div id="category-section">
@@ -190,8 +191,8 @@ const screens = {
                 
                 <div class="card" style="background: linear-gradient(135deg, var(--accent-indigo), #4f46e5);">
                     <p class="subtitle" style="color: rgba(255,255,255,0.7);">Presupuesto Restante</p>
-                    <div style="font-size: 32px; font-weight: 700;">$${remaining.toFixed(2)}</div>
-                    <p style="font-size: 12px; opacity: 0.8; margin-top: 8px;">De un total de $${budget.toFixed(2)}</p>
+                    <div style="font-size: 32px; font-weight: 700;">${formatCurrency(remaining)}</div>
+                    <p style="font-size: 12px; opacity: 0.8; margin-top: 8px;">De un total de ${formatCurrency(budget)}</p>
                 </div>
 
                 <div class="card">
@@ -258,7 +259,7 @@ const screens = {
                     </div>
                     <div class="card">
                         <p class="subtitle" style="font-size: 10px;">Saldo Disponible</p>
-                        <div style="font-size: 24px; font-weight: 700; color: var(--accent-teal);">$${kpis.savingsCapacity}</div>
+                        <div style="font-size: 24px; font-weight: 700; color: var(--accent-teal);">${formatCurrency(kpis.savingsCapacity)}</div>
                     </div>
                 </div>
             </div>
@@ -640,9 +641,24 @@ class App {
             });
         }
 
+        // Auto-format amount with commas
+        const amountInput = document.getElementById('transaction-amount');
+        if (amountInput) {
+            amountInput.addEventListener('input', (e) => {
+                let val = e.target.value.replace(/[^0-9.]/g, ''); // Remove non-numeric chars
+                if (val) {
+                    const parts = val.split('.');
+                    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ','); // Add commas
+                    e.target.value = parts.join('.');
+                }
+            });
+        }
+
         saveBtn.addEventListener('click', () => {
-            const amount = document.getElementById('transaction-amount').value;
-            if (!amount) return alert('Ingresa un monto');
+            const rawAmount = document.getElementById('transaction-amount').value;
+            // Clean commas before saving
+            const amount = parseFloat(rawAmount.replace(/,/g, ''));
+            if (!amount || isNaN(amount)) return alert('Ingresa un monto válido');
 
             if (currentType === 'expense') {
                 const name = transactionName.value || 'Gasto General';
