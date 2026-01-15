@@ -594,3 +594,21 @@ input:checked+.slider:before {
 .btn-logout .material-symbols-rounded {
     font-size: 28px;
 }
+
+/* Light Mode Overrides for Buttons */
+.light-mode .segment-btn {
+    color: var(--text-secondary);
+}
+
+.light-mode .segment-btn.active {
+    color: white;
+}
+
+.light-mode .cat-btn {
+    color: var(--text-primary);
+    border-color: var(--card-border);
+}
+
+.light-mode .cat-btn.active {
+    color: white;
+}
