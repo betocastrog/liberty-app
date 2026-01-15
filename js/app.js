@@ -288,9 +288,6 @@ const screens = {
             <p style="text-align: center; margin-top: 24px; font-size: 14px; color: var(--text-secondary);">
                 ¿No tienes cuenta? <a href="#" id="link-go-register" style="color: var(--accent-indigo); font-weight: 600; text-decoration: none;">Regístrate</a>
             </p>
-            <div style="margin-top: 40px; padding: 20px; background: rgba(99,102,241,0.1); border-radius: 12px; border: 1px solid rgba(99,102,241,0.2);">
-                <p style="font-size: 12px; color: var(--text-secondary); text-align: center;">Usa el código maestro <b>26122024</b> para pruebas rápidas.</p>
-            </div>
         </div>
     `,
 
