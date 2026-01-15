@@ -1,18 +1,31 @@
 :root {
     --bg-color: #0d0e12;
+    --header-bg: rgba(10, 11, 20, 0.8);
     --card-bg: rgba(255, 255, 255, 0.05);
     --card-border: rgba(255, 255, 255, 0.1);
     --text-primary: #ffffff;
     --text-secondary: #94a3b8;
-
     --accent-indigo: #6366f1;
     --accent-teal: #14b8a6;
-
     --status-green: #10b981;
     --status-yellow: #f59e0b;
     --status-red: #ef4444;
-
     --safe-area-bottom: env(safe-area-inset-bottom);
+    --input-bg: rgba(255, 255, 255, 0.05);
+    --nav-bg: rgba(13, 14, 18, 0.8);
+    --logo-gradient: linear-gradient(135deg, white 0%, rgba(255, 255, 255, 0.6) 100%);
+}
+
+.light-mode {
+    --bg-color: #f8fafc;
+    --header-bg: rgba(255, 255, 255, 0.8);
+    --card-bg: #ffffff;
+    --card-border: #e2e8f0;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --input-bg: #f1f5f9;
+    --nav-bg: rgba(255, 255, 255, 0.9);
+    --logo-gradient: linear-gradient(135deg, #1e293b 0%, #64748b 100%);
 }
 
 .top-header {
@@ -23,7 +36,7 @@
     position: sticky;
     top: 0;
     z-index: 10;
-    background: rgba(10, 11, 20, 0.8);
+    background: var(--header-bg);
     backdrop-filter: blur(10px);
 }
 
@@ -31,7 +44,7 @@
     font-weight: 700;
     font-size: 20px;
     letter-spacing: -0.5px;
-    background: linear-gradient(135deg, white 0%, rgba(255, 255, 255, 0.6) 100%);
+    background: var(--logo-gradient);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -180,8 +193,8 @@
 }
 
 .segment-btn.active {
-    background: white;
-    color: black;
+    background: var(--text-primary);
+    color: var(--bg-color);
 }
 
 /* Form Styles */
@@ -198,9 +211,9 @@
 
 .form-input {
     width: 100%;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: white;
+    background: var(--input-bg);
+    border: 1px solid var(--card-border);
+    color: var(--text-primary);
     padding: 12px;
     border-radius: 12px;
     outline: none;
@@ -217,12 +230,17 @@ select.form-input option {
     padding: 16px;
     border-radius: 16px;
     border: none;
-    background: white;
-    color: black;
+    background: var(--accent-indigo);
+    color: white;
     font-weight: 700;
     font-size: 16px;
     cursor: pointer;
-    transition: transform 0.2s;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.light-mode .btn-primary {
+    background: var(--accent-indigo);
+    color: white;
 }
 
 .btn-primary:active {
@@ -246,11 +264,11 @@ select.form-input option {
 }
 
 .cat-btn.active {
-    background: white;
-    color: black;
+    background: var(--accent-indigo);
+    color: white;
     transform: scale(0.95);
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2), 0 0 15px rgba(255, 255, 255, 0.3);
-    border-color: white;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    border-color: var(--accent-indigo);
 }
 
 /* Help Accordion */
@@ -352,7 +370,7 @@ body {
     left: 0;
     right: 0;
     height: 80px;
-    background: rgba(13, 14, 18, 0.8);
+    background: var(--nav-bg);
     backdrop-filter: blur(20px);
     display: flex;
     justify-content: space-around;
@@ -423,10 +441,7 @@ h1 {
 .big-number {
     font-size: 48px;
     font-weight: 700;
-    background: linear-gradient(135deg, #fff, #94a3b8);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--text-primary);
 }
 
 /* Status Colors */
@@ -465,4 +480,24 @@ h1 {
 
 .fade-in {
     animation: fadeIn 0.4s ease forwards;
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    color: var(--text-primary);
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+    transition: 0.3s;
+}
+
+.theme-toggle:active {
+    transform: scale(0.9);
 }
