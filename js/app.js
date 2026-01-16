@@ -271,18 +271,20 @@ const screens = {
             <p class="subtitle" style="text-align: center;">Bienvenido a Liberty</p>
             <h1 style="text-align: center; margin-bottom: 40px; font-size: 40px;">Iniciar Sesión</h1>
             <div class="card">
-                <div class="form-group" id="login-fields">
-                    <label class="form-label">Email</label>
-                    <input type="email" id="login-email" class="form-input" placeholder="tu@email.com">
-                    <label class="form-label" style="margin-top: 12px;">Contraseña</label>
-                <div class="password-container">
-                    <input type="password" id="login-password" class="form-input" placeholder="••••••••">
-                    <button type="button" class="btn-toggle-pass" onclick="app.togglePasswordVisibility('login-password', this)">
-                        <span class="material-symbols-rounded">visibility</span>
-                    </button>
-                </div>
-                    <button id="btn-do-login-pass" class="btn-primary" style="margin-top: 12px;">Entrar</button>
-                </div>
+                <form id="form-login">
+                    <div class="form-group" id="login-fields">
+                        <label class="form-label">Email</label>
+                        <input type="email" id="login-email" class="form-input" placeholder="tu@email.com" autocomplete="email" required>
+                        <label class="form-label" style="margin-top: 12px;">Contraseña</label>
+                        <div class="password-container">
+                            <input type="password" id="login-password" class="form-input" placeholder="••••••••" autocomplete="current-password" required>
+                            <button type="button" class="btn-toggle-pass" onclick="app.togglePasswordVisibility('login-password', this)">
+                                <span class="material-symbols-rounded">visibility</span>
+                            </button>
+                        </div>
+                        <button type="submit" id="btn-do-login-pass" class="btn-primary" style="margin-top: 12px;">Entrar</button>
+                    </div>
+                </form>
             </div>
             <p style="text-align: center; margin-top: 24px; font-size: 14px; color: var(--text-secondary);">
                 ¿No tienes cuenta? <a href="#" id="link-go-register" style="color: var(--accent-indigo); font-weight: 600; text-decoration: none;">Regístrate</a>
@@ -295,24 +297,28 @@ const screens = {
             <p class="subtitle" style="text-align: center;">Únete a Liberty</p>
             <h1 style="text-align: center; margin-bottom: 40px; font-size: 40px;">Crear Cuenta</h1>
             <div class="card">
-                <div class="form-group" id="reg-fields">
-                    <label class="form-label">Email</label>
-                    <input type="email" id="reg-email" class="form-input" placeholder="tu@email.com">
-                    <label class="form-label" style="margin-top: 12px;">Crea una Contraseña</label>
-                <div class="password-container">
-                    <input type="password" id="reg-password" class="form-input" placeholder="Mínimo 6 caracteres">
-                    <button type="button" class="btn-toggle-pass" onclick="app.togglePasswordVisibility('reg-password', this)">
-                        <span class="material-symbols-rounded">visibility</span>
-                    </button>
-                </div>
-                    <button id="btn-go-otp-reg" class="btn-primary" style="margin-top: 12px;">Siguiente</button>
-                </div>
-                <div class="form-group" id="otp-reg-fields" style="display: none;">
-                    <p class="subtitle" style="text-align: center; margin-bottom: 12px;">Ingresa el Código Universal</p>
-                    <input type="text" id="reg-otp-code" class="form-input" placeholder="00000000" style="text-align: center; font-size: 24px; letter-spacing: 4px;">
-                    <button id="btn-verify-reg-otp" class="btn-primary" style="margin-top: 12px;">Finalizar Registro</button>
-                    <button id="btn-back-to-email-reg" style="background: none; border: none; color: var(--text-secondary); width: 100%; margin-top: 12px; font-size: 13px; cursor: pointer;">Volver</button>
-                </div>
+                <form id="form-register-step1">
+                    <div class="form-group" id="reg-fields">
+                        <label class="form-label">Email</label>
+                        <input type="email" id="reg-email" class="form-input" placeholder="tu@email.com" autocomplete="email" required>
+                        <label class="form-label" style="margin-top: 12px;">Crea una Contraseña</label>
+                        <div class="password-container">
+                            <input type="password" id="reg-password" class="form-input" placeholder="Mínimo 6 caracteres" autocomplete="new-password" required minlength="6">
+                            <button type="button" class="btn-toggle-pass" onclick="app.togglePasswordVisibility('reg-password', this)">
+                                <span class="material-symbols-rounded">visibility</span>
+                            </button>
+                        </div>
+                        <button type="submit" id="btn-go-otp-reg" class="btn-primary" style="margin-top: 12px;">Siguiente</button>
+                    </div>
+                </form>
+                <form id="form-register-step2" style="display: none;">
+                    <div class="form-group" id="otp-reg-fields">
+                        <p class="subtitle" style="text-align: center; margin-bottom: 12px;">Ingresa el Código Universal</p>
+                        <input type="text" id="reg-otp-code" class="form-input" placeholder="00000000" style="text-align: center; font-size: 24px; letter-spacing: 4px;" autocomplete="one-time-code" required>
+                        <button type="submit" id="btn-verify-reg-otp" class="btn-primary" style="margin-top: 12px;">Finalizar Registro</button>
+                        <button type="button" id="btn-back-to-email-reg" style="background: none; border: none; color: var(--text-secondary); width: 100%; margin-top: 12px; font-size: 13px; cursor: pointer;">Volver</button>
+                    </div>
+                </form>
             </div>
             <p style="text-align: center; margin-top: 24px; font-size: 14px; color: var(--text-secondary);">
                 ¿Ya tienes cuenta? <a href="#" id="link-go-login" style="color: var(--accent-indigo); font-weight: 600; text-decoration: none;">Inicia sesión</a>
@@ -453,8 +459,19 @@ class App {
 
     setupAuthEvents() {
         // --- Login Logic (Direct) ---
-        const btnDoLoginPass = document.getElementById('btn-do-login-pass');
-        if (btnDoLoginPass) {
+        const formLogin = document.getElementById('form-login');
+        if (formLogin) {
+            formLogin.onsubmit = async (e) => {
+                e.preventDefault();
+                const email = document.getElementById('login-email').value;
+                const password = document.getElementById('login-password').value;
+                if (!email || !password) return alert('Ingresa email y contraseña');
+                try {
+                    await state.login(email, password);
+                    this.navigate('dashboard');
+                } catch (e) { alert(e.message); }
+            };
+        } else if (btnDoLoginPass) {
             btnDoLoginPass.onclick = async () => {
                 const email = document.getElementById('login-email').value;
                 const password = document.getElementById('login-password').value;
@@ -471,22 +488,60 @@ class App {
         const btnVerifyRegOtp = document.getElementById('btn-verify-reg-otp');
         const btnBackToEmailReg = document.getElementById('btn-back-to-email-reg');
 
-        const regFields = document.getElementById('reg-fields');
-        const otpRegFields = document.getElementById('otp-reg-fields');
+        const formRegStep1 = document.getElementById('form-register-step1');
+        const formRegStep2 = document.getElementById('form-register-step2');
 
-        if (btnGoOtpReg) {
+        if (formRegStep1) {
+            formRegStep1.onsubmit = (e) => {
+                e.preventDefault();
+                const email = document.getElementById('reg-email').value;
+                const password = document.getElementById('reg-password').value;
+
+                if (!email) return alert('Ingresa tu email');
+                if (!password || password.length < 6) return alert('La contraseña debe tener al menos 6 caracteres');
+
+                formRegStep1.style.display = 'none';
+                if (formRegStep2) formRegStep2.style.display = 'block';
+            };
+        } else if (btnGoOtpReg) {
+            // Backward compatibility safety
+            const regFields = document.getElementById('reg-fields');
+            const otpRegFields = document.getElementById('otp-reg-fields');
             btnGoOtpReg.onclick = () => {
                 const email = document.getElementById('reg-email').value;
                 const password = document.getElementById('reg-password').value;
                 if (!email) return alert('Ingresa tu email');
                 if (!password || password.length < 6) return alert('La contraseña debe tener al menos 6 caracteres');
 
-                regFields.style.display = 'none';
-                otpRegFields.style.display = 'block';
+                if (regFields) regFields.style.display = 'none';
+                if (otpRegFields) otpRegFields.style.display = 'block';
             };
         }
 
-        if (btnVerifyRegOtp) {
+        if (formRegStep2) {
+            formRegStep2.onsubmit = async (e) => {
+                e.preventDefault();
+                const email = document.getElementById('reg-email').value;
+                const password = document.getElementById('reg-password').value;
+                const code = document.getElementById('reg-otp-code').value;
+
+                if (!code) return alert('Ingresa el código maestro');
+                try {
+                    const res = await fetch('/api/auth/verify-otp', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email, code, password })
+                    });
+                    const data = await res.json();
+                    if (data.token) {
+                        alert('¡Cuenta creada con éxito! Ahora puedes iniciar sesión.');
+                        this.navigate('login');
+                    } else {
+                        alert(data.error);
+                    }
+                } catch (e) { alert('Error al verificar código'); }
+            };
+        } else if (btnVerifyRegOtp) {
             btnVerifyRegOtp.onclick = async () => {
                 const email = document.getElementById('reg-email').value;
                 const password = document.getElementById('reg-password').value;
@@ -512,8 +567,15 @@ class App {
 
         if (btnBackToEmailReg) {
             btnBackToEmailReg.onclick = () => {
-                otpRegFields.style.display = 'none';
-                regFields.style.display = 'block';
+                if (formRegStep1 && formRegStep2) {
+                    formRegStep2.style.display = 'none';
+                    formRegStep1.style.display = 'block';
+                } else {
+                    const regFields = document.getElementById('reg-fields');
+                    const otpRegFields = document.getElementById('otp-reg-fields');
+                    if (otpRegFields) otpRegFields.style.display = 'none';
+                    if (regFields) regFields.style.display = 'block';
+                }
             };
         }
 
